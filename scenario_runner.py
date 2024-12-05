@@ -36,6 +36,7 @@ from srunner.scenarioconfigs.openscenario_configuration import OpenScenarioConfi
 from srunner.scenariomanager.carla_data_provider import CarlaDataProvider
 from srunner.scenariomanager.scenario_manager import ScenarioManager
 from srunner.scenarios.open_scenario import OpenScenario
+from srunner.scenarios.open_scenario_with_agent import OpenScenarioWithAgent
 from srunner.scenarios.route_scenario import RouteScenario
 from srunner.tools.scenario_parser import ScenarioConfigurationParser
 from srunner.tools.route_parser import RouteParser
@@ -370,7 +371,14 @@ class ScenarioRunner(object):
         print("Preparing scenario: " + config.name)
         try:
             self._prepare_ego_vehicles(config.ego_vehicles)
-            if self._args.openscenario:
+            if self._args.openscenario and self._args.agent:
+                print("!!!!! if self._args.openscenario and self._args.agent")
+                scenario = OpenScenarioWithAgent(world=self.world,
+                                                 ego_vehicles=self.ego_vehicles,
+                                                 config=config,
+                                                 config_file=self._args.openscenario,
+                                                 timeout=100000)
+            elif self._args.openscenario:
                 scenario = OpenScenario(world=self.world,
                                         ego_vehicles=self.ego_vehicles,
                                         config=config,
@@ -485,12 +493,36 @@ class ScenarioRunner(object):
         self._cleanup()
         return result
 
+    def _run_openscenario_with_agent(self):
+        """
+        Run a scenario based on OpenSCENARIO
+        """
+
+        # Load the scenario configurations provided in the config file
+        if not os.path.isfile(self._args.openscenario):
+            print("File does not exist")
+            self._cleanup()
+            return False
+
+        config = OpenScenarioConfiguration(self._args.openscenario, self.client)
+
+        routes = self._args.route[0]
+        route_configurations = RouteParser.parse_routes_file(routes, None)
+        config.trajectory = route_configurations[0].trajectory
+
+        result = self._load_and_run_scenario(config)
+        self._cleanup()
+        return result
+
+
     def run(self):
         """
         Run all scenarios according to provided commandline args
         """
         result = True
-        if self._args.openscenario:
+        if self._args.openscenario and self._args.agent:
+            result = self._run_openscenario_with_agent()
+        elif self._args.openscenario:
             result = self._run_openscenario()
         elif self._args.route:
             result = self._run_route()
@@ -567,15 +599,15 @@ def main():
         parser.print_help(sys.stdout)
         return 1
 
-    if arguments.route and (arguments.openscenario or arguments.scenario):
-        print("The route mode cannot be used together with a scenario (incl. OpenSCENARIO)'\n\n")
-        parser.print_help(sys.stdout)
-        return 1
+    # if arguments.route and (arguments.openscenario or arguments.scenario):
+    #     print("The route mode cannot be used together with a scenario (incl. OpenSCENARIO)'\n\n")
+    #     parser.print_help(sys.stdout)
+    #     return 1
 
-    if arguments.agent and (arguments.openscenario or arguments.scenario):
-        print("Agents are currently only compatible with route scenarios'\n\n")
-        parser.print_help(sys.stdout)
-        return 1
+    # if arguments.agent and (arguments.openscenario or arguments.scenario):
+    #     print("Agents are currently only compatible with route scenarios'\n\n")
+    #     parser.print_help(sys.stdout)
+    #     return 1
 
     if arguments.route:
         arguments.reloadWorld = True

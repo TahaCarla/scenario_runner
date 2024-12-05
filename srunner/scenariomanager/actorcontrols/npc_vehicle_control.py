@@ -50,7 +50,7 @@ class NpcVehicleControl(BasicControl):
         plan = []
         for transform in self._waypoints:
             waypoint = CarlaDataProvider.get_map().get_waypoint(
-                transform.location, project_to_road=True, lane_type=carla.LaneType.Any)
+                transform.location, project_to_road=True, lane_type=carla.LaneType.Driving)
             plan.append((waypoint, RoadOption.LANEFOLLOW))
         self._local_planner.set_global_plan(plan)
 

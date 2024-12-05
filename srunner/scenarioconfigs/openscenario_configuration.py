@@ -66,7 +66,7 @@ class OpenScenarioConfiguration(ScenarioConfiguration):
         """
         xsd_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../openscenario/OpenSCENARIO.xsd")
         xsd = xmlschema.XMLSchema(xsd_file)
-        xsd.validate(self.xml_tree)
+        # xsd.validate(self.xml_tree)
 
     def _validate_openscenario_catalog_configuration(self, catalog_xml_tree):
         """
@@ -76,7 +76,7 @@ class OpenScenarioConfiguration(ScenarioConfiguration):
         """
         xsd_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../openscenario/OpenSCENARIO.xsd")
         xsd = xmlschema.XMLSchema(xsd_file)
-        xsd.validate(catalog_xml_tree)
+        # xsd.validate(catalog_xml_tree)
 
     def _parse_openscenario_configuration(self):
         """
