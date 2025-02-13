@@ -1,0 +1,40 @@
+{
+    "_checkpoint": {
+        "global_record": {},
+        "progress": [],
+        "records": [
+            {
+                "index": 0,
+                "infractions": {
+                    "collisions_layout": [],
+                    "collisions_pedestrian": [],
+                    "collisions_vehicle": [],
+                    "outside_route_lanes": [],
+                    "red_light": [],
+                    "route_dev": [],
+                    "route_timeout": [],
+                    "stop_infraction": [],
+                    "vehicle_blocked": []
+                },
+                "meta": {
+                    "duration_game": 37.40000055730343,
+                    "duration_system": 73.2760112285614,
+                    "route_length": 113.36993259759318,
+                    "total_steps": 747
+                },
+                "route_id": "ModularScenario",
+                "scores": {
+                    "score_composed": 0.0,
+                    "score_penalty": 1.0,
+                    "score_route": 0.0
+                },
+                "status": "Failed - crash"
+            }
+        ]
+    },
+    "eligible": "",
+    "entry_status": "",
+    "labels": [],
+    "sensors": [],
+    "values": []
+}

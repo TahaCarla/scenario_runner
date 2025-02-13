@@ -1,12 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <routes>
    <route id="0" town="Town03">
+      <waypoint pitch="180.0" roll="0.0" x="100" y="-3.5" yaw="0" z="0.0" />
+      <waypoint pitch="180.0" roll="0.0" x="70" y="-3.5" yaw="0" z="0.0" />
+      <waypoint pitch="180.0" roll="0.0" x="50" y="-7" yaw="0" z="0.0" />
       <waypoint pitch="180.0" roll="0.0" x="40" y="-7" yaw="0" z="0.0" />
-      <waypoint pitch="180.0" roll="0.0" x="10" y="-15" yaw="0" z="0.0" />
-      <waypoint pitch="220.0" roll="0.0" x="0" y="-20" yaw="0" z="0.0" />
-      <waypoint pitch="220.0" roll="0.0" x="-15" y="-15" yaw="0" z="0.0" />
-      <waypoint pitch="180.0" roll="0.0" x="-20" y="-10" yaw="0" z="0.0" />
-      <waypoint pitch="180.0" roll="0.0" x="-40" y="-3" yaw="0" z="0.0" />
-      <waypoint pitch="180.0" roll="0.0" x="-60" y="-3" yaw="0" z="0.0" />
+<!--      <waypoint pitch="180.0" roll="0.0" x="10" y="-15" yaw="0" z="0.0" />-->
+<!--      <waypoint pitch="220.0" roll="0.0" x="0" y="-20" yaw="0" z="0.0" />-->
+<!--      <waypoint pitch="220.0" roll="0.0" x="-15" y="-15" yaw="0" z="0.0" />-->
+<!--      <waypoint pitch="180.0" roll="0.0" x="-20" y="-10" yaw="0" z="0.0" />-->
+<!--      <waypoint pitch="180.0" roll="0.0" x="-40" y="-3" yaw="0" z="0.0" />-->
+<!--      <waypoint pitch="180.0" roll="0.0" x="-60" y="-3" yaw="0" z="0.0" />-->
+   </route>
+   <route id="1" town="Town03">
+      <waypoint pitch="180.0" roll="0.0" x="100" y="-3.5" yaw="0" z="0.0" />
+      <waypoint pitch="180.0" roll="0.0" x="70" y="-3.5" yaw="0" z="0.0" />
+      <waypoint pitch="180.0" roll="0.0" x="40" y="-7" yaw="0" z="0.0" />
+<!--      <waypoint pitch="180.0" roll="0.0" x="40" y="-7" yaw="0" z="0.0" />-->
+<!--      <waypoint pitch="150.0" roll="0.0" x="20" y="-10" yaw="0" z="0.0" />-->
+<!--      <waypoint pitch="160.0" roll="0.0" x="10" y="-15" yaw="0" z="0.0" />-->
+<!--      <waypoint pitch="180.0" roll="0.0" x="5" y="-18" yaw="0" z="0.0" />-->
+<!--      <waypoint pitch="180.0" roll="0.0" x="0" y="-18" yaw="0" z="0.0" />-->
+<!--      <waypoint pitch="180.0" roll="0.0" x="-5" y="-18" yaw="0" z="0.0" />-->
+<!--      <waypoint pitch="180.0" roll="0.0" x="-10" y="-15" yaw="0" z="0.0" />-->
+<!--      <waypoint pitch="180.0" roll="0.0" x="0" y="-15" yaw="0" z="0.0" />-->
+<!--      <waypoint pitch="90.0" roll="0.0" x="10" y="-30" yaw="0" z="0.0" />-->
+<!--      <waypoint pitch="180.0" roll="0.0" x="-15" y="-15" yaw="0" z="0.0" />-->
+<!--      <waypoint pitch="180.0" roll="0.0" x="-10" y="0" yaw="0" z="0.0" />-->
+<!--      <waypoint pitch="180.0" roll="0.0" x="-20" y="-10" yaw="0" z="0.0" />-->
+<!--      <waypoint pitch="180.0" roll="0.0" x="-40" y="-3" yaw="0" z="0.0" />-->
+<!--      <waypoint pitch="180.0" roll="0.0" x="-60" y="-3" yaw="0" z="0.0" />-->
    </route>
 </routes>

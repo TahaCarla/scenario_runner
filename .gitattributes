@@ -1,0 +1,2 @@
+ECHO is on.
+weights/lidar_v2_7.th filter=lfs diff=lfs merge=lfs -text

@@ -24,6 +24,8 @@ from srunner.tools.openscenario_parser import OpenScenarioParser, oneshot_with_c
 from srunner.tools.py_trees_port import Decorator
 from srunner.tools.route_manipulation import interpolate_trajectory
 
+
+DATA_COLLECTION = os.environ.get('DATA_COLLECTION', None)
 def repeatable_behavior(behaviour, name=None):
     """
     This behaviour allows a composite with oneshot ancestors to run multiple
@@ -145,6 +147,17 @@ class StoryElementStatusToBlackboard(Decorator):
                 overwrite=True
             )
 
+def convert_transform_to_location(transform_vec):
+    """
+    Convert a vector of transforms to a vector of locations
+    """
+    location_vec = []
+    # print("!!!!!!!transformvec")
+    # print(transform_vec)
+    for transform_tuple in transform_vec:
+        location_vec.append((transform_tuple[0].location, transform_tuple[1]))
+
+    return location_vec
 
 def get_xml_path(tree, node):
     """
@@ -179,6 +192,7 @@ class OpenScenarioWithAgent(BasicScenario):
         """
         Setup all relevant parameters and create scenario
         """
+        self.global_plan_set = False
         self.config = config
         self.route = None
         self.config_file = config_file
@@ -372,7 +386,7 @@ class OpenScenarioWithAgent(BasicScenario):
             if end_triggers is not None and list(end_triggers) is not None:
                 for end_condition in end_triggers:
                     parallel_end_criteria = self._create_condition_container(
-                        end_condition, "EndConditions", success_on_all=False)
+                        end_condition, "EndConditions", success_on_all=True)
                     if parallel_end_criteria.children:
                         parallel_behavior.add_child(parallel_end_criteria)
 
@@ -408,14 +422,11 @@ class OpenScenarioWithAgent(BasicScenario):
         - world: CARLA world
         - config: Scenario configuration (RouteConfiguration)
         """
-
-        if config.agent is not None:
-            if config.agent.initialized is True:
-                route = self.config.agent._route_planner.get_route()
-            else:
-                gps_route, route = interpolate_trajectory(world, config.trajectory)
-
+        if (not self.global_plan_set) and config.agent:
+            gps_route, route = interpolate_trajectory(world, config.trajectory)
             self.config.agent.set_global_plan(gps_route, route)
+            self.global_plan_set = True
+            return route
 
     def _create_condition_container(self, node, name='Conditions Group', sequence=None,
                                     maneuver=None, success_on_all=True):
@@ -426,7 +437,7 @@ class OpenScenarioWithAgent(BasicScenario):
         """
 
         parallel_condition_groups = py_trees.composites.Parallel(name,
-                                                                 policy=py_trees.common.ParallelPolicy.SUCCESS_ON_ONE)
+                                                                 policy=py_trees.common.ParallelPolicy.SUCCESS_ON_ALL)
 
         for condition_group in node.iter("ConditionGroup"):
             if success_on_all:
@@ -457,7 +468,7 @@ class OpenScenarioWithAgent(BasicScenario):
         in parallel behavior tree.
         """
         parallel_criteria = py_trees.composites.Parallel("EndConditions (Criteria Group)",
-                                                         policy=py_trees.common.ParallelPolicy.SUCCESS_ON_ONE)
+                                                         policy=py_trees.common.ParallelPolicy.SUCCESS_ON_ALL)
 
         criteria = []
         for endcondition in self.config.storyboard.iter("StopTrigger"):
@@ -470,7 +481,64 @@ class OpenScenarioWithAgent(BasicScenario):
             criterion = OpenScenarioParser.convert_condition_to_atomic(condition, self.ego_vehicles)
             parallel_criteria.add_child(criterion)
 
+        print("Scenario Tree Structure:")
+        py_trees.display.print_ascii_tree(parallel_criteria, show_status=True)
+
+        print("Criteria added to parallel_criteria (first function):", [c.name for c in parallel_criteria.children])
+
         return parallel_criteria
+
+        # gps_route, route = interpolate_trajectory(self.world, self.config.trajectory)
+        # route = convert_transform_to_location(route)
+        #
+        # if DATA_COLLECTION:
+        #     collision_criterion = CollisionTest(self.ego_vehicles[0], terminate_on_failure=True)
+        #     red_light_criterion = RunningRedLightTest(self.ego_vehicles[0], terminate_on_failure=True)
+        # else:
+        #     collision_criterion = CollisionTest(self.ego_vehicles[0], terminate_on_failure=False)
+        #     red_light_criterion = RunningRedLightTest(self.ego_vehicles[0], terminate_on_failure=False)
+        #
+        # route_criterion = InRouteTest(self.ego_vehicles[0],
+        #                               route=route,
+        #                               offroad_max=30,
+        #                               terminate_on_failure=False)
+        #
+        # completion_criterion = RouteCompletionTest(self.ego_vehicles[0], route=route)
+        #
+        # outsidelane_criterion = OutsideRouteLanesTest(self.ego_vehicles[0], route=route)
+        #
+        # stop_criterion = RunningStopTest(self.ego_vehicles[0])
+        #
+        # blocked_criterion = ActorSpeedAboveThresholdTest(self.ego_vehicles[0],
+        #                                                  speed_threshold=0.1,
+        #                                                  below_threshold_max_time=180.0,
+        #                                                  terminate_on_failure=True,
+        #                                                  name="AgentBlockedTest")
+
+        # print("Completion Criterion Configuration:", completion_criterion.__dict__)
+        # print("InRoute Criterion Configuration:", route_criterion.__dict__)
+
+        # parallel_criteria.add_child(completion_criterion)
+        # parallel_criteria.add_child(outsidelane_criterion)
+        # parallel_criteria.add_child(collision_criterion)
+        # parallel_criteria.add_child(red_light_criterion)
+        # parallel_criteria.add_child(stop_criterion)
+        # parallel_criteria.add_child(route_criterion)
+        # parallel_criteria.add_child(blocked_criterion)
+
+
+        # print("Criteria added to parallel_criteria (second function):", [c.name for c in parallel_criteria.children])
+        #
+        # print("!!!!criteria")
+        # print(criteria)
+        # print("!!!!parallellcriteria")
+        # print(parallel_criteria)
+        # # parallel_criteria.append(criteria)
+        #
+
+
+
+
 
     def __del__(self):
         """
