@@ -396,16 +396,16 @@ class RouteScenario(BasicScenario):
 
         # Create the background activity of the route
         town_amount = {
-            'Town01': 120,
-            'Town02': 100,
-            'Town03': 120,
-            'Town04': 200,
-            'Town05': 120,
-            'Town06': 150,
-            'Town07': 110,
-            'Town08': 180,
-            'Town09': 300,
-            'Town10': 120,
+            'Town01': 4,
+            'Town02': 0,
+            'Town03': 1,
+            'Town04': 0,
+            'Town05': 0,
+            'Town06': 0,
+            'Town07': 0,
+            'Town08': 0,
+            'Town09': 0,
+            'Town10': 0,
         }
 
         amount = town_amount[config.town] if config.town in town_amount else 0

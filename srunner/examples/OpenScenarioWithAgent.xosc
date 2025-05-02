@@ -918,11 +918,11 @@
                 </StartTrigger>
                 <StopTrigger>
                     <ConditionGroup>
-<!--                        <Condition conditionEdge="rising" delay="0" name="StopTriggerCondition">-->
-<!--                            <ByValueCondition>-->
-<!--                                <SimulationTimeCondition rule="equalTo" value="60"/>-->
-<!--                            </ByValueCondition>-->
-<!--                        </Condition>-->
+                        <Condition conditionEdge="rising" delay="10" name="criteria_finish">
+                            <ByValueCondition>
+                                <SimulationTimeCondition rule="greaterThan" value="70.0"/>
+                            </ByValueCondition>
+                        </Condition>
 <!--                        <Condition conditionEdge="rising" delay="0" name="StopTriggerCondition">-->
 <!--                            <ByEntityCondition>-->
 <!--                                <TriggeringEntities triggeringEntitiesRule="any">-->
@@ -935,42 +935,44 @@
 <!--                        </Condition>-->
 
 
-<!--                         <Condition conditionEdge="rising" delay="0" name="criteria_Collisiontest">-->
-<!--                            <ByEntityCondition>-->
-<!--                                <TriggeringEntities triggeringEntitiesRule="any">-->
-<!--                                    <EntityRef entityRef="hero"/>-->
-<!--                                </TriggeringEntities>-->
-<!--                                <EntityCondition>-->
-<!--                                    <CollisionCondition>-->
-<!--                                        <ByObjectType byType="vehicle"/>-->
-<!--                                    </CollisionCondition>-->
-<!--                                </EntityCondition>-->
-<!--                            </ByEntityCondition>-->
-<!--                        </Condition>-->
-                        <Condition conditionEdge="rising" delay="0" name="criteria_Scenario starting">
+                         <Condition conditionEdge="rising" delay="0" name="criteria_Collisiontest">
                             <ByEntityCondition>
                                 <TriggeringEntities triggeringEntitiesRule="any">
                                     <EntityRef entityRef="hero"/>
                                 </TriggeringEntities>
                                 <EntityCondition>
-                                    <TraveledDistanceCondition value="60.0"/>
+                                    <CollisionCondition>
+                                        <ByObjectType type="vehicle"/>
+                                    </CollisionCondition>
                                 </EntityCondition>
                             </ByEntityCondition>
                         </Condition>
-<!--                        <Condition  name="criteria_ReachDestination" conditionEdge="rising" delay="0">-->
+
+                        <Condition  name="criteria_RouteCompleted" conditionEdge="rising" delay="0">
+                            <ByEntityCondition>
+                                <TriggeringEntities>
+                                    <EntityRef entityRef="hero"/>
+                                </TriggeringEntities>
+                                <EntityCondition>
+                                    <ReachPositionCondition tolerance="5.0">
+                                        <Position>
+                                            <WorldPosition x="50" y="-3.5" z="0"/>
+                                        </Position>
+                                    </ReachPositionCondition>
+                                </EntityCondition>
+                            </ByEntityCondition>
+                        </Condition>
+<!--                        <Condition conditionEdge="rising" delay="0" name="criteria_Scenario starting">-->
 <!--                            <ByEntityCondition>-->
-<!--                                <TriggeringEntities>-->
+<!--                                <TriggeringEntities triggeringEntitiesRule="any">-->
 <!--                                    <EntityRef entityRef="hero"/>-->
 <!--                                </TriggeringEntities>-->
 <!--                                <EntityCondition>-->
-<!--                                    <ReachPositionCondition tolerance="3.0">-->
-<!--                                        <Position>-->
-<!--                                            <WorldPosition x="40" y="-7"/>-->
-<!--                                        </Position>-->
-<!--                                    </ReachPositionCondition>-->
+<!--                                    <TraveledDistanceCondition value="100.0"/>-->
 <!--                                </EntityCondition>-->
 <!--                            </ByEntityCondition>-->
 <!--                        </Condition>-->
+
 
 
 

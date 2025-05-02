@@ -528,7 +528,7 @@ class ScenarioEvaluator(object):
         scenario_duration_system = self.manager.scenario_duration_system
         scenario_duration_game = self.manager.scenario_duration_game
         crash_message = "crash"
-
+        config.world = self.world
         stats_record = self.statistics_manager.compute_route_statistics(
             config,
             scenario_duration_system,

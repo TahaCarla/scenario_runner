@@ -386,7 +386,7 @@ class OpenScenarioWithAgent(BasicScenario):
             if end_triggers is not None and list(end_triggers) is not None:
                 for end_condition in end_triggers:
                     parallel_end_criteria = self._create_condition_container(
-                        end_condition, "EndConditions", success_on_all=True)
+                        end_condition, "EndConditions", success_on_all=False)
                     if parallel_end_criteria.children:
                         parallel_behavior.add_child(parallel_end_criteria)
 
@@ -468,7 +468,7 @@ class OpenScenarioWithAgent(BasicScenario):
         in parallel behavior tree.
         """
         parallel_criteria = py_trees.composites.Parallel("EndConditions (Criteria Group)",
-                                                         policy=py_trees.common.ParallelPolicy.SUCCESS_ON_ALL)
+                                                         policy=py_trees.common.ParallelPolicy.SUCCESS_ON_ONE)
 
         criteria = []
         for endcondition in self.config.storyboard.iter("StopTrigger"):

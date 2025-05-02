@@ -11,6 +11,7 @@ This module contains a statistics manager for the CARLA AD leaderboard
 
 from __future__ import print_function
 
+import py_trees.common
 from dictor import dictor
 import math
 import sys
@@ -289,15 +290,44 @@ class StatisticsManager(object):
                             route_record.infractions['vehicle_blocked'].append(event.get_message())
                             failure = "Agent got blocked"
 
-                        elif event.get_type() == TrafficEventType.ROUTE_COMPLETED:
-                            score_route = 100.0
-                            target_reached = True
-                        elif event.get_type() == TrafficEventType.ROUTE_COMPLETION:
-                            if not target_reached:
-                                if event.get_dict():
-                                    score_route = event.get_dict()['route_completed']
-                                else:
-                                    score_route = 0
+                        # elif event.get_type() == TrafficEventType.ROUTE_COMPLETED:
+                        #     score_route = 100.0
+                        #     target_reached = True
+                        # elif event.get_type() == TrafficEventType.ROUTE_COMPLETION:
+                        #     if not target_reached:
+                        #         if event.get_dict():
+                        #             score_route = event.get_dict()['route_completed']
+                        #         else:
+                        #             score_route = 0
+                elif node.name == "RouteCompleted" and node.status == py_trees.common.Status.SUCCESS:
+                    score_route = 100.0
+                    target_reached = True
+                    print("!!!!!!osc")
+                    print(node._osc_position)
+                    print(dir(node._osc_position))
+                else:
+                    if not target_reached and node.name == "RouteCompleted":
+                        print("!!!!!!!!!os positon")
+                        # client = config.client
+                        # world = client.load_world(config.town)
+                        world = config.world
+                        if world is None:
+                            raise RuntimeError(
+                                "World is not set. Ensure the CARLA server is running and CarlaDataProvider is initialized.")
+                        gps_route, route = interpolate_trajectory(world, config.trajectory)
+                        route = convert_transform_to_location(route)
+                        print("!!!!")
+                        print(route)
+                        completion_criterion = RouteCompletionTest(node._actor, route=route)
+                        print("!!!!!completion")
+                        print(completion_criterion)
+                        print(vars(completion_criterion))
+                        print(node._actor)
+                        print(node._osc_position)
+                        print(dir(node._osc_position))
+
+
+
 
         # update route scores
         print("!!!!!!!!!!after traffic events")
